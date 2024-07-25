@@ -2,6 +2,8 @@
 
 namespace MVC\Http;
 
+use MVC\View\View;
+
 class Route
 {
     public static array $routes = [];
@@ -13,6 +15,7 @@ class Route
     public function __construct(Request $request, Responce $responce)
     {
         $this->request = $request;
+
         $this->responce = $responce;
     }
 
@@ -28,12 +31,18 @@ class Route
     public function resolve()
     {
         $path = $this->request->path();
+
         $method = $this->request->method();
+
         $action = self::$routes[$method][$path] ?? false;
 
+        // if (array_key_exists($path, self::$routes[$method])) {
+        //     dd('Route not found');
+        // }
+
         if (!$action) {
-            return;
             // 404
+            View::error('404');
         }
 
         if (is_callable($action)) {
