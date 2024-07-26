@@ -2,10 +2,14 @@
 
 namespace App\Controllers;
 
+use MVC\Requests\FormRequest;
+use MVC\Requests\PostCreateRequest;
 use MVC\View\View;
 
 class TestController
 {
+    public $xatoliklar;
+
     public function __construct()
     {
         layout('layouts/main');
@@ -21,7 +25,12 @@ class TestController
 
     public function createData()
     {
-        $data = $_POST['create'];
-        return view('test', ['data' => $data]);
+        $request = new PostCreateRequest($_POST);
+
+        if (!$request->validate()) {
+            
+            $this->xatoliklar = $request->errors();
+        }
+        return view('test', ['data' => $request->all(), 'errors' => $this->xatoliklar]);
     }
 }
