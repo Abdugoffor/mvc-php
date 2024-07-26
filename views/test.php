@@ -18,11 +18,11 @@
     }
 </style>
 <form action="/createData" method="post">
-    <input type="text" placeholder="Create" name="name"><br>
+    <input type="text" placeholder="Create" value="<?= $data['name'] ?? '' ?>" name="name"><br>
     <span><?= $errors['name'] ?? '' ?></span><br>
     <br>
 
-    <input type="text" placeholder="Text" name="text"><br>
+    <input type="text" placeholder="Text" value="<?= $data['text'] ?? '' ?>" name="text"><br>
     <span><?= $errors['text'] ?? '' ?></span><br>
     <br>
 
