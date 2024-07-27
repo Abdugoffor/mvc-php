@@ -2,13 +2,14 @@
 
 namespace App\Controllers;
 
+use App\Models\Post;
 use MVC\Requests\FormRequest;
 use MVC\Requests\PostCreateRequest;
 use MVC\View\View;
 
 class TestController
 {
-    public $xatoliklar;
+    public $validationErrors;
 
     public function __construct()
     {
@@ -16,21 +17,32 @@ class TestController
     }
     public function index()
     {
-        return view('index');
+        $models = Post::all();
+        return view('index', ['data' => $models]);
     }
     public function create()
     {
         return view('create');
     }
 
-    public function createData()
+    public function store()
     {
         $request = new PostCreateRequest($_POST);
 
         if (!$request->validate()) {
-            
-            $this->xatoliklar = $request->errors();
+
+            $this->validationErrors = $request->errors();
+
+            return view('create', ['data' => $request->all(), 'errors' => $this->validationErrors]);
         }
-        return view('test', ['data' => $request->all(), 'errors' => $this->xatoliklar]);
+        Post::create($request->all());
+        
+        return redirect('/');
+    }
+
+    public function postShow($id)
+    {
+        $model = Post::find($id);
+        return view('show', ['data' => $model]);
     }
 }

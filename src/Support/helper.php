@@ -56,6 +56,14 @@ if (!function_exists('view')) {
     }
 }
 
+if (!function_exists('redirect')) {
+    function redirect(string $view)
+    {
+        return header("Location: $view");
+
+    }
+}
+
 if (!function_exists('layout')) {
     function layout(string $layout)
     {

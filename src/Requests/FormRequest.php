@@ -20,11 +20,9 @@ class FormRequest
     public function validate(): bool
     {
         foreach ($this->rules as $field => $rule) {
-
             $rules = explode('|', $rule);
-            
+
             foreach ($rules as $r) {
-                
                 $this->applyRule($field, $r);
             }
         }
@@ -34,11 +32,9 @@ class FormRequest
     protected function applyRule($field, $rule)
     {
         $rulePars = explode(':', $rule);
-
         $ruleName = $rulePars[0];
-
         $ruleValue = $rulePars[1] ?? null;
-
+        
         switch ($ruleName) {
             case 'required':
                 if (empty($this->data[$field])) {
@@ -72,7 +68,7 @@ class FormRequest
 
             case 'string':
                 if (!is_string($this->data[$field])) {
-                    $this->errors[$field] = $this->messages[$field . '.string'] ?? 'This field must be a string. 123';
+                    $this->errors[$field] = $this->messages[$field . '.string'] ?? 'This field must be a string.';
                 }
                 break;
 
@@ -88,8 +84,10 @@ class FormRequest
 
     public function all(): array
     {
+        unset($this->data['ok']);
         return $this->data;
     }
+
     public function data(): array
     {
         return $this->data;
